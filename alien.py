@@ -15,3 +15,9 @@ class Alien(Sprite):
         self.rect.y = self.rect.height
         
         self.actual_x = float(self.rect.x) #for precision
+        self.settings = ai_instance.settings
+        
+    def update(self):
+        """Updates the alien position"""
+        self.actual_x += self.settings.alien_speed
+        self.rect.x = self.actual_x

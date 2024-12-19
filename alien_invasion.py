@@ -33,6 +33,7 @@ class AlienInvasion():
             self._check_events()
             self.ship.update()
             self.update_bullets()
+            self._update_aliens()
             self._update_screen()
             pygame.display.flip()
             self.clock.tick(60)
@@ -72,6 +73,10 @@ class AlienInvasion():
         for bullet in self.bullets.copy():
             if bullet.rect.bottom <= 0:
                 self.bullets.remove(bullet)
+                
+    def _update_aliens(self):
+        """calls update on all the aliens"""
+        self.aliens.update()
 
     def _update_screen(self):
         """Updates the screen and draws ship
@@ -92,14 +97,25 @@ class AlienInvasion():
         """Creates a fleet of aliens."""
         alien = Alien(self)
         
-        alien_width = alien.rect.width
+        alien_width, alien_height = alien.rect.size
+        current_x, current_y = alien_width, alien_height
         
-        current_x = alien_width
-        while current_x < self.settings.screen_width - alien_width:
-            new_alien = Alien(self)
-            new_alien.rect.x = current_x
-            self.aliens.add(new_alien)
-            current_x += alien_width * 2
+        while current_y < (self.settings.screen_height - 3 * alien_height):
+            while current_x < (self.settings.screen_width - alien_width * 2):
+                self._create_alien(current_x, current_y)
+                current_x += alien_width * 2
+            
+            current_x = alien_width
+            current_y += alien_height * 2
+                
+            
+    def _create_alien(self, x_coord, y_coord):
+        """Creates a single alien"""
+        new_alien = Alien(self)
+        new_alien.actual_x = x_coord
+        new_alien.rect.x = x_coord
+        new_alien.rect.y = y_coord
+        self.aliens.add(new_alien)
             
 if __name__ == '__main__':
     #Make an instance
