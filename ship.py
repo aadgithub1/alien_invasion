@@ -20,9 +20,9 @@ class Ship():
         
     def update(self):
         """Checks to see if the ship should be moving."""
-        if self.moving_right:
+        if self.moving_right and self.rect.right < self.screen_rect.right:
             self.actual_x += self.settings.ship_speed
-        elif self.moving_left:
+        elif self.moving_left and self.rect.left > self.screen_rect.left:
             self.actual_x -= self.settings.ship_speed
             
         self.rect.x = self.actual_x
